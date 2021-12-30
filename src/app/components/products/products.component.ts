@@ -3,6 +3,7 @@ import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProductService, CartService } from 'src/app/services';
 import { Product } from 'src/app/models';
+import * as FullStory from '@fullstory/browser';
 
 /**
  * Breakpoint aliases (e.g. 'sm') to number of grid-list columns.
@@ -41,6 +42,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
     this.observeBreakpoints();
     this.buildProductList();
+    FullStory.event('ListProduct',{message:`List products`});
   }
 
   /**
@@ -50,6 +52,7 @@ export class ProductsComponent implements OnInit {
    */
   addToCart(product: Product) {
     const { id } = product;
+    FullStory.event('AddProduct',{message:`Adding ${id}`});
     this.cartService.addItem(id);
     this.snackbar.open(`Added ${product.title} to your cart`, '', { duration: 2000 });
   }

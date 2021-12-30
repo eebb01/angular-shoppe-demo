@@ -6,6 +6,7 @@ import { first } from 'rxjs/operators'
 import { Product, State, states } from 'src/app/models';
 import { CartService } from 'src/app/services';
 import { DatalayerService } from 'src/app/services/datalayer.service';
+import * as FullStory from '@fullstory/browser';
 
 @Component({
   selector: 'app-checkout',
@@ -41,6 +42,7 @@ export class CheckoutComponent implements OnInit {
    */
   checkout() {
     // do some processing ...
+    FullStory.event('CheckOutEventUp',{message:'Go to checkout page'});
     this.items$.pipe(first()).subscribe(items => this.datalayer.checkout(items));
     this.cartService.clear();
     this.router.navigate(['/thankyou']);

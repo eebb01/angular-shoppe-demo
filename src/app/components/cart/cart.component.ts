@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CartService } from 'src/app/services';
 import { Product } from 'src/app/models';
 import { Observable } from 'rxjs';
+import * as FullStory from '@fullstory/browser';
 
 @Component({
   selector: 'app-cart',
@@ -47,6 +48,7 @@ export class CartComponent implements OnInit {
   removeItem(item: Product): void {
     const { id } = item;
     this.cartService.removeItem(id);
+    FullStory.event('RemoveProduct',{message:`Remove product ${id}`});
   }
 
 }
