@@ -52,7 +52,7 @@ export class ProductsComponent implements OnInit {
    */
   addToCart(product: Product) {
     const { id } = product;
-    FullStory.event('AddProduct',{message:`Adding ${id}`});
+    FullStory.event('AddProduct',{message:`Adding ${product.title}`});
     this.cartService.addItem(id);
     this.snackbar.open(`Added ${product.title} to your cart`, '', { duration: 2000 });
   }
