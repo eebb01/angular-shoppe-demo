@@ -48,7 +48,7 @@ export class CartComponent implements OnInit {
   removeItem(item: Product): void {
     const { id } = item;
     this.cartService.removeItem(id);
-    FullStory.event('RemoveProduct',{message:`Remove product ${item.title}`});
+    FullStory.event('RemoveProduct',{title: item.title, id:item.id, price:item.price, qty: item.quantity});
   }
 
 }

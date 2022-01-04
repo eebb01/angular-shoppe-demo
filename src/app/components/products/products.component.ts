@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProductService, CartService } from 'src/app/services';
 import { Product } from 'src/app/models';
 import * as FullStory from '@fullstory/browser';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 /**
  * Breakpoint aliases (e.g. 'sm') to number of grid-list columns.
@@ -18,7 +19,7 @@ interface BreakpointMap {
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-
+  deviceInfo = null;
   // TODO (van) a better approach is min/max width based on the product's image size
   private columnBreakpoints: BreakpointMap = {
     'default': 3,
@@ -37,12 +38,16 @@ export class ProductsComponent implements OnInit {
     private mediaObserver: MediaObserver,
     private productService: ProductService,
     private snackbar: MatSnackBar,
-  ) { }
+    private deviceService: DeviceDetectorService
+  ) {
+    this.deviceInfo = this.deviceService.getDeviceInfo();
+   }
 
   ngOnInit() {
     this.observeBreakpoints();
     this.buildProductList();
     FullStory.event('ListProduct',{message:`List products`});
+    FullStory.setUserVars({'deviceInfo': this.deviceInfo});
   }
 
   /**
@@ -52,7 +57,11 @@ export class ProductsComponent implements OnInit {
    */
   addToCart(product: Product) {
     const { id } = product;
-    FullStory.event('AddProduct',{message:`Adding ${product.title}`});
+    FullStory.event('AddProduct',{
+      title: product.title,
+      id: product.id, 
+      price: product.price, 
+      qty: product.quantity});
     this.cartService.addItem(id);
     this.snackbar.open(`Added ${product.title} to your cart`, '', { duration: 2000 });
   }

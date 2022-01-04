@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, HostListener  } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import * as FullStory from '@fullstory/browser';
 
 export interface FeedbackData {
   nps: number; // net promoter score
@@ -16,16 +17,28 @@ export class FeedbackComponent {
 
   constructor(public dialog: MatDialog) { }
 
+  feedbackSubmitted(event: CustomEvent): void{
+    console.log('Window dispatched event triggered');
+  }
+
+  @HostListener('window:feedback', ['$event'])
+  feedback(event: CustomEvent) {
+    console.log(event.detail); // element that triggered event, in this case HTMLUnknownElement
+    FullStory.event('Feedback_Submitted',{nps: event.detail.nps, osat: event.detail.osat, comments: event.detail.comments});
+  }
+
   openDialog(): void {
     const dialogRef = this.dialog.open(FeedbackDialog, {
       width: '800px',
     });
 
     dialogRef.afterClosed().subscribe(data => {
+      console.log("called after close")
       const { nps, osat, comments } = data;
+   
       // broadcasts a CustomEvent
       // see https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
-      window.dispatchEvent(new CustomEvent('feedback_submitted', { detail: { nps, osat, comments } }));
+      window.dispatchEvent(new CustomEvent('feedback', { detail: { nps, osat, comments }}));
     });
   }
 }
@@ -47,6 +60,7 @@ export class FeedbackDialog {
   ) { }
 
   close(): void {
+    FullStory.event('Feedback_Close',{'message':'Close Feedback Dialog'});
     this.dialogRef.close();
   }
 }
