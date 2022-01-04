@@ -11,7 +11,7 @@ export class ThankYouComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    FullStory.event('ThankyouEventUp',{message:'user redirected to thank you page'});
+    FullStory.event('Thankyou',{message:'user redirected to thank you page'});
   }
 
 }
