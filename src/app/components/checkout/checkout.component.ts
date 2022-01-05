@@ -42,7 +42,6 @@ export class CheckoutComponent implements OnInit {
    */
   checkout() {
     // do some processing ...
-    console.log(this.getCartTotal());
     FullStory.event('CheckOutEventUp',{totalAmount: this.getCartTotal()});
     this.items$.pipe(first()).subscribe(items => this.datalayer.checkout(items));
     this.cartService.clear();
