@@ -23,7 +23,6 @@ export class FeedbackComponent {
 
   @HostListener('window:feedback', ['$event'])
   feedback(event: CustomEvent) {
-    console.log(event.detail); // element that triggered event, in this case HTMLUnknownElement
     FullStory.event('Feedback_Submitted',{nps: event.detail.nps, osat: event.detail.osat, comments: event.detail.comments});
   }
 
@@ -33,7 +32,6 @@ export class FeedbackComponent {
     });
 
     dialogRef.afterClosed().subscribe(data => {
-      console.log("called after close")
       const { nps, osat, comments } = data;
    
       // broadcasts a CustomEvent
