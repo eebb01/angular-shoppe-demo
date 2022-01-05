@@ -32,11 +32,12 @@ export class FeedbackComponent {
     });
 
     dialogRef.afterClosed().subscribe(data => {
-      const { nps, osat, comments } = data;
-   
-      // broadcasts a CustomEvent
-      // see https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
-      window.dispatchEvent(new CustomEvent('feedback', { detail: { nps, osat, comments }}));
+      if(data != undefined){
+        const { nps, osat, comments } = data;
+        // broadcasts a CustomEvent
+        // see https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
+        window.dispatchEvent(new CustomEvent('feedback', { detail: { nps, osat, comments }})); 
+      }
     });
   }
 }
