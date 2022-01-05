@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CartService } from 'src/app/services';
 import { Product } from 'src/app/models';
 import { Observable } from 'rxjs';
@@ -17,6 +17,13 @@ export class CartComponent implements OnInit {
 
   constructor(private cartService: CartService) {
 
+  }
+
+  @HostListener('fullstory/rageclick', ['$event'])
+  rageclick(event: CustomEvent) {
+    FullStory.log('Rage event is called');
+    console.log("Rage justified!");
+    //submit it to product channel for quick updates
   }
 
   ngOnInit() {

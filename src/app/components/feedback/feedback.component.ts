@@ -34,6 +34,7 @@ export class FeedbackComponent {
     dialogRef.afterClosed().subscribe(data => {
       if(data != undefined){
         const { nps, osat, comments } = data;
+        console.log(data);
         // broadcasts a CustomEvent
         // see https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
         window.dispatchEvent(new CustomEvent('feedback', { detail: { nps, osat, comments }})); 
